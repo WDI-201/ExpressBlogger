@@ -57,3 +57,23 @@
 
 - Nodemon
 	- Nodemon is a developer library that will restart the server automatically when any of the files inside the repo are changed.
+	- _Note_: If there is an error in our server code, nodemon will crash 
+		- If the error is with the code we wrote, we can update the code and nodemon will restart
+		- If the error is in the execution, nodemon will NOT restart
+
+- module.exports is the list of code to export from a file. There are two ways to do exports:
+- Named
+	- A named export is when we export an object containing key/value pairs of variables or functions and we want to access specific variables on that object
+		- Export: module.exports = {
+				validateUserData,
+				validateAdminData
+			}
+		- Import: 
+			- File 1: var { validateUserData } = require("../validation/users")
+			- File 2: var { validateAdminData } = require("../validation/users")
+- Default
+	- A default export is when a single variable is exported from a file
+		- Export: module.exports = router;
+		- Import: var usersRouter = require('./routes/users');
+
+ Typically, it is an object with a list of functions on it.
