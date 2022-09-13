@@ -53,5 +53,68 @@ router.get('/', function(req, res, next) {
 	});
 });
 
+router.get('/all', function(req, res, next) {
+  res.json({
+		success: true,
+		blogs: sampleBlogs
+	});
+});
+
+router.get('/single/:blogTitleToGet', function(req, res, next) {
+
+	const blogToFind = req.params.blogTitleToGet;
+
+	/* const blogIndex = sampleBlogs.findIndex((blog)=>{
+		if (blog.title === blogToFind) {
+			return true;
+		} else {
+			return false;
+		}
+	})
+
+	const foundBlog = sampleBlogs[blogIndex]; */
+
+	// .find() will return the entry matching the true condition in the callback function
+	const foundBlog = sampleBlogs.find((blog)=>{
+		if (blog.title === blogToFind) {
+			return true;
+		} else {
+			return false;
+		}
+	})
+	
+  res.json({
+		success: true,
+		blog: foundBlog
+	});
+});
+
+router.delete("/single/:blogTitleToDelete", (req, res)=>{
+
+	const blogIndexToDelete = sampleBlogs.findIndex((blog)=>{
+		if (blog.title === req.params.blogTitleToDelete) {
+			return true;
+		} else {
+			return false;
+		}
+	})
+
+	console.log(blogIndexToDelete)
+
+	if (blogIndexToDelete < 0) {
+		res.json({
+			hasBeenDeleted: false
+		})
+		return;
+	}
+
+	sampleBlogs.splice(blogIndexToDelete, 1);
+
+	res.json({
+		hasBeenDeleted: true
+	})
+
+})
+
 // Module.exports is listing the variables in this file to send to other files
 module.exports = router;
