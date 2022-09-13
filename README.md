@@ -54,3 +54,6 @@
 	- dependencies are the libraries/node_modules that are REQUIRED for our application to run
 	- devDependencies are the libraries/node_modules that are only needed when doing development work
 	- _Note_: If you are running 'npm i' in a project for the first time after cloning the repo, this will install ALL node_modules including devDependencies
+
+- Nodemon
+	- Nodemon is a developer library that will restart the server automatically when any of the files inside the repo are changed.
