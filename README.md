@@ -1,6 +1,6 @@
 # ExpressBlogger
 
-## Class Notes
+## Class Notes - Day 1
 
 - .gitignore is the list of files that will be ignored by git
 - We want node_modules to be ignored because of the large folder size
@@ -44,3 +44,13 @@
 						- var usersRouter = require('./routes/users');
 						- app.use('/users', usersRouter);
 					- The '/all' path for the route we created in users.js is going to be APPENDED to the base path in app.js. I.E. the final path will be "localhost:3000/users/all"
+
+## Class Notes - Day 2:
+
+- Sever-side validation is checking the request inputs before the CRUD operation is executed.
+	- _Note_: Server-side validation is required to be implemented for all fullstack websites/applications
+
+- Package.json
+	- dependencies are the libraries/node_modules that are REQUIRED for our application to run
+	- devDependencies are the libraries/node_modules that are only needed when doing development work
+	- _Note_: If you are running 'npm i' in a project for the first time after cloning the repo, this will install ALL node_modules including devDependencies
