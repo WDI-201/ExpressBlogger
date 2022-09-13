@@ -75,5 +75,3 @@
 	- A default export is when a single variable is exported from a file
 		- Export: module.exports = router;
 		- Import: var usersRouter = require('./routes/users');
-
- Typically, it is an object with a list of functions on it.

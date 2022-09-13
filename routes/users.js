@@ -43,7 +43,8 @@ router.post('/create-one', (req, res) => {
 
 	if (userDataCheck.isValid === false) {
 		res.json({
-			success: false
+			success: false,
+			message: userDataCheck.message
 		})
 		return;
 	}
