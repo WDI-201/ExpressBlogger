@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+var { validateBlogData } = require("../validation/blogs")
+
 const sampleBlogs = [
   {
 		title: "dicta",
@@ -88,6 +90,78 @@ router.get('/single/:blogTitleToGet', function(req, res, next) {
 		blog: foundBlog
 	});
 });
+
+router.post('/create-one', (req, res) => {
+	const title = req.body.title
+	const text = req.body.text
+	const author = req.body.author
+	const category = req.body.category
+
+	const blogData = {
+		title,
+		text,
+		author,
+		category,
+		createdAt: new Date(),
+		lastModified: new Date()
+	}
+
+	const blogDataCheck = validateBlogData(blogData)
+
+	if (blogDataCheck.isValid === false) {
+		res.json({
+			success: false,
+			message: blogDataCheck.message
+		})
+		return;
+	}
+
+	sampleBlogs.push(blogData)
+
+	res.json({
+		success: true
+	})
+})
+
+router.put('/update-one/:blogTitle', (req, res) => {
+
+	const title = req.params.blogTitle
+
+	const text = req.body.text
+	const author = req.body.author
+	const category = req.body.category
+
+	const originalBlogIndex = sampleBlogs.findIndex((blog)=>{
+		return blog.title === title
+	})
+
+	const originalBlog = sampleBlogs[originalBlogIndex]
+
+	const blogData = {
+		title: originalBlog.title,
+		text,
+		author,
+		category,
+		createdAt: originalBlog.createdAt,
+		lastModified: new Date()
+	}
+
+	const blogDataCheck = validateBlogData(blogData)
+
+	if (blogDataCheck.isValid === false) {
+		res.json({
+			success: false,
+			message: blogDataCheck.message
+		})
+		return;
+	}
+
+	sampleBlogs[originalBlogIndex] = blogData
+
+	res.json({
+		success: true
+	})
+})
 
 router.delete("/single/:blogTitleToDelete", (req, res)=>{
 
