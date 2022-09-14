@@ -1,4 +1,5 @@
 
+// Note: If we have a function, we want to return similar values for all possible return cases.
 const validateUserData = (userData) => {
 
 	if (userData.email === undefined || typeof(userData.email) !== "string") {
@@ -32,28 +33,33 @@ const validateUserData = (userData) => {
 			message: "Age must be a number"
 		}
 	} 
-	
+
+	// Since all array's in JS are objects behind the scenes, typeof(array) will return 'object'. So in order to verify that the variable is actually an array, we have to do the Array.isArray() check.
+	if (userData.favoriteFoods === undefined || !Array.isArray(userData.favoriteFoods) || userData.favoriteFoods.length === 0) {
+		return {
+			isValid: false,
+			message: "favorite foods must be an array and must have length"
+		}
+	} 
+
+	let isArrayStrings = true;
+
+	userData.favoriteFoods.forEach((favoriteFood)=>{
+		if (typeof(favoriteFood) !== 'string') {
+			isArrayStrings = false;
+		}
+	})
+
+	if (isArrayStrings === false) {
+		return {
+			isValid: false,
+			message: "favorite foods must be an array of strings"
+		}
+	}
+
 	return {
 		isValid: true
 	}
-
-	// if (userData.favoriteFoods !== undefined && Array.isArray(userData.favoriteFoods) && userData.favoriteFoods.length > 0) {
-	// 	// Array.isArray() will check to see if the variable is an array
-
-	// 	let isFavoriteFoodsStrings = true;
-
-	// 	for (let i = 0; i < userData.favoriteFoods.length; i++) {
-	// 		if (typeof(userData.favoriteFoods[i]) !== 'string') {
-	// 			isFavoriteFoodsStrings = false
-	// 		}
-	// 	}
-
-	// 	if (isFavoriteFoodsStrings === false) {
-	// 		return {
-	// 			isValid: false
-	// 		}
-	// 	}
-	// } 
 }
 
 module.exports = {
