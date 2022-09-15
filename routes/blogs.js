@@ -57,31 +57,46 @@ router.get('/', function(req, res, next) {
 
 // localhost:3000/blogs/all?fields=title,author,category,createdAt,lastModified
 router.get('/all', function(req, res, next) {
-
+	
 	const fields = req.query.fields
+	
+	const limit = Number(req.query.limit);
+	const start = Number(req.query.start);
 
-	const fieldsArray = fields.split(",")
+	let blogs = sampleBlogs
 
-	// .map() loops through the array and modifies each entry and returns the modified entry into a new array for all items
-	const mappedBlogs = sampleBlogs.map((blog)=>{
-		const blogWithFields = {}
+	console.log(limit, typeof(limit))
+	console.log(start, typeof(start))
 
-		// loop through fieldsArray and assign that field from blog to blogWithFields
-		fieldsArray.forEach((field)=>{
-			
-			// blogWithFields["title"] = blog["title"]
-			blogWithFields[field] = blog[field]
+	if (limit !== undefined && start !== undefined) {
+		const end = start + limit
+		blogs = sampleBlogs.slice(start, end)
+	}
 
+	if (fields) {
+		const fieldsArray = fields.split(",")
+	
+		// .map() loops through the array and modifies each entry and returns the modified entry into a new array for all items
+		const mappedBlogs = sampleBlogs.map((blog)=>{
+			const blogWithFields = {}
+	
+			// loop through fieldsArray and assign that field from blog to blogWithFields
+			fieldsArray.forEach((field)=>{
+				
+				// blogWithFields["title"] = blog["title"]
+				blogWithFields[field] = blog[field]
+	
+			})
+	
+			return blogWithFields
 		})
 
-		return blogWithFields
-	})
-
-	console.log(mappedBlogs)
+		blogs = mappedBlogs
+	}
 
   res.json({
 		success: true,
-		blogs: mappedBlogs
+		blogs: blogs
 	});
 });
 
@@ -115,35 +130,40 @@ router.get('/single/:blogTitleToGet', function(req, res, next) {
 });
 
 router.post('/create-one', (req, res) => {
-	const title = req.body.title
-	const text = req.body.text
-	const author = req.body.author
-	const category = req.body.category
+	try {
+		const title = req.body.title
+		const text = req.body.text
+		const author = req.body.author
+		const category = req.body.category
 
-	const blogData = {
-		title,
-		text,
-		author,
-		category,
-		createdAt: new Date(),
-		lastModified: new Date()
-	}
+		const blogData = {
+			title,
+			text,
+			author,
+			category,
+			createdAt: new Date(),
+			lastModified: new Date()
+		}
 
-	const blogDataCheck = validateBlogData(blogData)
+		const blogDataCheck = validateBlogData(blogData)
 
-	if (blogDataCheck.isValid === false) {
+		if (blogDataCheck.isValid === false) {
+			res.json({
+				success: false,
+				message: blogDataCheck.message
+			})
+			return;
+		}
+
+		sampleBlogs.push(blogData)
+
 		res.json({
-			success: false,
-			message: blogDataCheck.message
+			success: true
 		})
-		return;
+	} catch (e) {
+		
 	}
-
-	sampleBlogs.push(blogData)
-
-	res.json({
-		success: true
-	})
+	
 })
 
 router.put('/update-one/:blogTitle', (req, res) => {
