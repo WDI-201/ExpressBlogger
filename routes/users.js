@@ -6,6 +6,11 @@ var { validateUserData } = require("../validation/users")
 
 const userList = [];
 
+
+const movieListArray = ["", ""]
+
+const toDoListObject = [{}, {}]
+
 /* GET users listing. */
 // Because our base path for users.js is "/users" and the route names concatenate, the final path for this route is going to be "localhost:3000/users/all"
 router.get('/all', function(req, res, next) {

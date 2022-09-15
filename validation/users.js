@@ -2,6 +2,24 @@
 // Note: If we have a function, we want to return similar values for all possible return cases.
 const validateUserData = (userData) => {
 
+	/* // EXAMPLE of .filter()
+	const array = ["string", 2, true, "other string"]
+
+	const filteredArray = array.filter((arrayItem)=>{
+		// .filter() will loop through an array we provide and will only return items that match true for the condition that we define
+
+		// For .filter() the return value must be a boolean and should be true for items that we want to keep
+		if (typeof(arrayItem) === 'string') {
+			return true;
+		} else {
+			return false;
+		}
+
+	})
+
+	console.log("array ", array)
+	console.log("filteredArray ", filteredArray) */
+
 	if (userData.email === undefined || typeof(userData.email) !== "string") {
 		// email is required and it must be a string
 		return {
@@ -42,15 +60,20 @@ const validateUserData = (userData) => {
 		}
 	} 
 
-	let isArrayStrings = true;
+	// We are going to use .filter() to iterate through favoriteFoods and will only bring through values that are NOT strings. Then we will check if the resultant array has any length, in which case we know there are non-string values in the array.
+	const nonStringFoods = userData.favoriteFoods.filter((favoriteFood)=>{
 
-	userData.favoriteFoods.forEach((favoriteFood)=>{
+		// If the callback function in .filter() returns true, then the item will be kept in the resultant array. If the callback returns false, the item will be filtered out
 		if (typeof(favoriteFood) !== 'string') {
-			isArrayStrings = false;
+			return true
+		} else {
+			return false
 		}
 	})
 
-	if (isArrayStrings === false) {
+	console.log("nonStringFoods ", nonStringFoods)
+
+	if (nonStringFoods.length > 0) {
 		return {
 			isValid: false,
 			message: "favorite foods must be an array of strings"

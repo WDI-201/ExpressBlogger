@@ -55,10 +55,33 @@ router.get('/', function(req, res, next) {
 	});
 });
 
+// localhost:3000/blogs/all?fields=title,author,category,createdAt,lastModified
 router.get('/all', function(req, res, next) {
+
+	const fields = req.query.fields
+
+	const fieldsArray = fields.split(",")
+
+	// .map() loops through the array and modifies each entry and returns the modified entry into a new array for all items
+	const mappedBlogs = sampleBlogs.map((blog)=>{
+		const blogWithFields = {}
+
+		// loop through fieldsArray and assign that field from blog to blogWithFields
+		fieldsArray.forEach((field)=>{
+			
+			// blogWithFields["title"] = blog["title"]
+			blogWithFields[field] = blog[field]
+
+		})
+
+		return blogWithFields
+	})
+
+	console.log(mappedBlogs)
+
   res.json({
 		success: true,
-		blogs: sampleBlogs
+		blogs: mappedBlogs
 	});
 });
 
